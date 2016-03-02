@@ -1,0 +1,35 @@
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+
+        DocumentRoot /var/www/
+        <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+        </Directory>
+        <Directory /var/www/>
+                AllowOverride All
+        </Directory>
+
+        Alias /medekimg /opt/medek/fs
+        <Directory /opt/medek/fs>
+                Require all granted
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+
+        # Possible values include: debug, info, notice, warn, error, crit,
+        # alert, emerg.
+        LogLevel warn
+
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+
+        # WILDFLY
+        ProxyPass / http://127.0.0.1:8080/medek-server/
+        ProxyPassReverse / http://127.0.0.1:8080/medek-server/
+		
+        ProxyPass /services http://127.0.0.1:8080/medek-server/services
+        ProxyPassReverse /services http://127.0.0.1:8080/medek-server/services
+
+
+</VirtualHost>
